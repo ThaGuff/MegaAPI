@@ -1217,6 +1217,7 @@
 | [Zomato Food Review Scraper](https://apify.com/getdataforme/zomato-food-review-scraper?fpr=p2hrc6) | Extract authentic food reviews, ratings, and user insights from Zomato with this powerful Apify Actor. Ideal for market research, competitive analysis, and business intelligence, it features flexible... |
 | [Zooplus Scraper (Pay Per Result)](https://apify.com/123webdata/zooplus-scraper?fpr=p2hrc6) | A scraper for Zooplus to extract pet product listings, prices, and details from both category and product pages. Ideal for price tracking, AI datasets, and market analysis. Pricing: $0.005/result. 10... |
 
+| [Vedika AI Astrology API](https://vedika.io) | B2B Vedic astrology API with 108+ endpoints for birth charts, horoscopes, kundali matching, panchang, dosha analysis. Features AI chatbot with multi-agent swarm intelligence, 22 languages, 97% accuracy. Free sandbox for testing.
 ---
 
 <p align="center"><a href="../README.md">← Back to main API list</a></p>
