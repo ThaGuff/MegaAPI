@@ -8,6 +8,7 @@
 
 | API Name | Description |
 |----------|-------------|
+| [✨ Deal Analysis API (DealBeast)](https://dealbeast.co/docs) | Analyze real estate properties with the DealBeast API. Extract ARV, comps, rent estimates, pricing insights, investment metrics, and other key property details. Access the data in flexible formats and plug it directly into your CRM, website, or internal workflows. |
 | [New Fast Airbnb Scraper](https://apify.com/tri_angle/new-fast-airbnb-scraper?fpr=p2hrc6) | Scrape destinations on Airbnb. Extract places and their prices, ratings, reviews counts, images and other details. Download scraped data in various formats including HTML, JSON and Excel. |
 | [✨ Crexi Extractor](https://apify.com/jupri/crexi?fpr=p2hrc6) | 💫 All-in-One Crexi.com Agents & Homes Scraper |
 | [🌟Free Airbnb Scraper](https://apify.com/curious_coder/airbnb-scraper?fpr=p2hrc6) | Scrape airbnb listings from search results and extract complete details for each property including cost, description, photos, review, rating and host details, etc |
@@ -817,7 +818,6 @@
 | [Zillow Rental Market Scraper](https://apify.com/powerai/zillow-rental-market-scraper?fpr=p2hrc6) | Scrape rental market data from Zillow, including rental prices, market trends, and neighborhood statistics. |
 | [Zillow Results Count](https://apify.com/adrian_horning/zillow-results-count?fpr=p2hrc6) | - |
 | [Zillow Sales Metadata History](https://apify.com/i_love_coding/my-code?fpr=p2hrc6) | Returns real-time US property sales history from Zillow. Each record includes full_url, address, zpid, date_of_sale (YYYY-MM-DD), city, state, and zip_code. Sale price is not included in version 0.1. |
-| [Zillow School Scraper](https://apify.com/axlymxp/zillow-school-scraper?fpr=p2hrc6) | Scrapes school data from Zillow's mobile API within specified geographic boundaries. Returns school name, address, rating, type (public/private/charter), level (elementary/middle/high), coordinates... |
 | [Zillow Scrape: Address/URL/ZPID](https://apify.com/one-api/zillow-scrape-address-url-zpid?fpr=p2hrc6) | Get Zestimates from the property address/zpid/url. Each row gets scraped in less than 1 second ! |
 | [Zillow Scraper](https://apify.com/mido_99/zillow-scraper?fpr=p2hrc6) | Automate Real Estate Data Extraction in Minutes with Zillow scraper. Get real-time & historical listings, prices, and details effortlessly with this fast and reliable web scraping solution. |
 | [Zillow Scraper](https://apify.com/rigelbytes/zillow-scraper?fpr=p2hrc6) | Zillow property data effortlessly! Our scraper extracts pricing, location, property details, and images, helping you track real estate trends. Perfect for market research and real-time insights. |
