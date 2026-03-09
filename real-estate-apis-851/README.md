@@ -8,6 +8,7 @@
 
 | API Name | Description |
 |----------|-------------|
+| [✨ Deal Analysis API (DealBeast)](https://dealbeast.co/docs) | Analyze real estate properties with the DealBeast API. Extract ARV, comps, rent estimates, pricing insights, investment metrics, and other key property details. Access the data in flexible formats and plug it directly into your CRM, website, or internal workflows. |
 | [New Fast Airbnb Scraper](https://apify.com/tri_angle/new-fast-airbnb-scraper?fpr=p2hrc6) | Scrape destinations on Airbnb. Extract places and their prices, ratings, reviews counts, images and other details. Download scraped data in various formats including HTML, JSON and Excel. |
 | [✨ Crexi Extractor](https://apify.com/jupri/crexi?fpr=p2hrc6) | 💫 All-in-One Crexi.com Agents & Homes Scraper |
 | [🌟Free Airbnb Scraper](https://apify.com/curious_coder/airbnb-scraper?fpr=p2hrc6) | Scrape airbnb listings from search results and extract complete details for each property including cost, description, photos, review, rating and host details, etc |
