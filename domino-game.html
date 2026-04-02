@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>دومينو مصري مع محفظة الكترونية</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh;
+            background: radial-gradient(circle at top left, #3b82f6 0%, #4f46e5 40%, #1f2937 100%);
+            color: #1f2937; display: flex; justify-content: center; align-items: center; padding: 20px;
+        }
+
+        .container { width: min(100%, 1100px); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
+        .header { padding: 22px 24px; background: linear-gradient(90deg, #f97316 0%, #f59e0b 100%); color: #fff; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1.8rem; }
+        .header small { font-size: 0.9rem; opacity: 0.9; }
+        .main { display: grid; grid-template-columns: 280px 1fr; gap: 14px; background: #f8fafc; padding: 16px; }
+        .panel { border-radius: 14px; background: #fff; box-shadow: 0 6px 20px rgba(15,23,42,0.08); padding: 16px; }
+        .panel h2 { font-size: 1.05rem; margin-bottom: 10px; color: #111827; }
+        .panel label { display: block; margin: 8px 0 5px; font-size: 0.9rem; color: #374151; }
+        .panel input, .panel select { width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px; font-size: 0.95rem; }
+        .panel button { margin-top: 10px; width: 100%; padding: 10px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; }
+        .btn-primary { background: #2563eb; color: #fff; }
+        .btn-accent { background: #f59e0b; color: #fff; }
+        .btn-secondary { background: #e5e7eb; color: #111827; }
+        .info-item { background: #eef2ff; border-radius: 10px; padding: 10px; margin-bottom: 8px; }
+        .info-item strong { display: block; font-size: 1.25rem; }
+
+        .board-wrapper { display: flex; flex-direction: column; gap: 10px; }
+        .subrow { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .game-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 8px 0 12px; }
+        .game-info .info-box { background: #eef2ff; border-radius: 10px; padding: 10px; text-align: center; }
+        .game-info .info-box p { font-size: 0.9rem; color: #4b5563; }
+        .game-info .info-box .value { margin-top: 6px; font-size: 1.35rem; font-weight: 700; }
+
+        .board { min-height: 140px; background: linear-gradient(125deg,#e2e8f0,#cbd5e1); border: 2px dashed #93c5fd; border-radius: 12px; padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; }
+        .hand, .opponent-hand { display: flex; flex-wrap: wrap; gap: 8px; min-height: 100px; background: #fff; border-radius: 10px; padding: 10px; }
+        .domino, .hand-domino { width: 50px; height: 90px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: center; align-items: center; font-weight: 700; }
+        .domino { background: #f3f4f6; border: 2px solid #374151; }
+        .hand-domino { background: linear-gradient(120deg,#9333ea,#6366f1); color: #fff; cursor: move; }
+        .domino span { font-size: 1.2rem; }
+
+        .drop-zone { flex: 1; min-height: 80px; border: 2px dashed #9ca3af; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 0.85rem; }
+        .drop-zone.drag-over { border-color: #2563eb; background: rgba(37,99,235,0.1); }
+
+        .message { margin-top: 8px; border-radius: 8px; padding: 10px; font-size: 0.95rem; text-align: center; display: none; }
+        .info { background: #dbeafe; color: #1e3a8a; }
+        .success { background: #dcfce7; color: #166534; }
+        .error { background: #fee2e2; color: #991b1b; }
+
+        .hidden { display: none !important; }
+        .friend-list { margin-top: 6px; border: 1px solid #d1d5db; border-radius: 8px; padding: 8px; max-height: 120px; overflow-y: auto; }
+        .friend-item { padding: 6px 8px; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 6px; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+
+        @media (max-width: 980px) { .main { grid-template-columns: 1fr; } }
+        @media (max-width: 650px) { .board, .hand { min-height: 80px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>دومينو مصري 2026</h1>
+                <small>محفظة داخلية، خصم 5% (إيداع/سحب)، وخصم 10% في الفوز لصالح المالك</small>
+            </div>
+            <button class="btn-secondary" id="toggleSettingsBtn">⚙️ إعدادات</button>
+        </div>
+
+        <div class="main">
+            <aside class="panel" id="sidePanel">
+                <h2>حساب اللاعب</h2>
+                <label>اسم المستخدم</label>
+                <input type="text" id="userName" placeholder="أدخل اسمك" />
+                <label>كود المالك (اختياري)</label>
+                <input type="password" id="ownerCode" placeholder="كود المالك" />
+                <button class="btn-primary" onclick="loginPlayer()">دخول</button>
+
+                <div class="info-item">
+                    <p>حالة: <strong id="userStatus">غير متصل</strong></p>
+                </div>
+
+                <h2>المحفظة</h2>
+                <div class="info-item"><p>الرصيد: <strong id="walletBalance">0.00</strong> ج.م</p></div>
+                <label>المبلغ (ج.م)</label>
+                <input type="number" id="walletAmount" min="1" value="50" />
+                <button class="btn-accent" onclick="depositWallet()">إيداع</button>
+                <button class="btn-secondary" onclick="withdrawWallet()">سحب</button>
+                <p style="font-size:0.85rem;color:#4b5563;margin-top:2px;">تُخصم 5% على كل عملية.</p>
+
+                <h2>أصدقاء</h2>
+                <label>إضافة صديق بالإي دي</label>
+                <div style="display:flex;gap:6px;"><input id="friendId" placeholder="مثال: player123" style="flex:1;" /><button class="btn-secondary" onclick="addFriend()">أضف</button></div>
+                <div class="friend-list" id="friendList"></div>
+
+                <h2>اختيارات اللعب</h2>
+                <label>الوضع</label>
+                <select id="gameMode" onchange="onModeChange()">
+                    <option value="ai">العب ضد الذكاء الاصطناعي</option>
+                    <option value="friend">العب ضد صديق</option>
+                </select>
+                <label>الرهان (ج.م)</label>
+                <input type="number" id="betAmount" min="5" step="5" value="20" />
+                <button class="btn-primary" onclick="prepareMatch()">بدء غرفة</button>
+
+                <div class="message info" id="lobbyMessage"></div>
+            </aside>
+
+            <section class="panel" id="gamePanel">
+                <div class="game-info">
+                    <div class="info-box"><p>اللاعب</p><div class="value" id="displayPlayer">-</div></div>
+                    <div class="info-box"><p>المنافس</p><div class="value" id="displayOpponent">-</div></div>
+                    <div class="info-box"><p>جولة</p><div class="value" id="roundCount">0</div></div>
+                </div>
+
+                <div id="gameArea" class="board-wrapper hidden">
+                    <div class="subrow">
+                        <button class="btn-secondary" onclick="setDropSide('left')" id="dropLeft">يسار</button>
+                        <button class="btn-secondary" onclick="setDropSide('right')" id="dropRight">يمين</button>
+                        <div class="drop-zone" id="dropZone">اسحب هنا من يدك لتلعب</div>
+                    </div>
+                    <div class="board" id="board"></div>
+
+                    <div style="margin-top:8px;"><strong>المكدس المتبقي:</strong> <span id="pileCount">0</span></div>
+
+                    <div class="subrow" style="margin-top:10px;">
+                        <button class="btn-accent" onclick="drawFromPile()">سحب من المكدس</button>
+                        <button class="btn-primary" onclick="startNewGame()">أعد اللعبة</button>
+                    </div>
+
+                    <div class="subrow" style="gap:12px;margin-top:10px;"><div style="flex:1"><strong>أيدي اللاعب:</strong></div></div>
+                    <div class="hand" id="playerHand"></div>
+                </div>
+
+                <div class="message info" id="gameMessage">مرحباً، حضر غرفة اللعب</div>
+                <div class="message success hidden" id="resultMessage"></div>
+            </section>
+        </div>
+
+        <div id="settingsPanel" class="panel hidden" style="margin: 12px 16px 16px;">
+            <h2>إعدادات متقدمة</h2>
+            <label><input type="checkbox" id="soundToggle" checked /> تفعيل الصوت</label>
+            <label><input type="checkbox" id="autoShuffle" checked /> إعادة خلط تلقائي عبر كل جولة</label>
+            <label><input type="checkbox" id="ownerMode" disabled /> وضع المالك</label>
+            <p style="font-size:0.86rem;color:#6b7280;">لتفعيل وضع المالك أدخل رمز المالك ثم اضغط دخول.</p>
+        </div>
+    </div>
+
+    <script>
+        const feePercent = 0.05;
+        const ownerCut = 0.1;
+        let game = null;
+        const state = { username: '', isOwner: false, opponent: 'الكمبيوتر', balance: 1000, mode: 'ai', bet: 20, friends: [] };
+        let currentDropSide = 'right';
+
+        const sounds = {
+            place: new Audio('https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg'),
+            win: new Audio('https://actions.google.com/sounds/v1/cartoon/zipper_fast.ogg'),
+            lose: new Audio('https://actions.google.com/sounds/v1/cartoon/concussive_explosion.ogg'),
+            draw: new Audio('https://actions.google.com/sounds/v1/cartoon/slide_whistle_to_drum.ogg')
+        };
+
+        function playSound(name) {
+            if (!document.getElementById('soundToggle').checked) return;
+            const s = sounds[name];
+            if (s) { s.currentTime = 0; s.volume = 0.45; s.play().catch(() => {}); }
+        }
+
+        function updateUIValues() {
+            document.getElementById('walletBalance').textContent = state.balance.toFixed(2);
+            document.getElementById('displayPlayer').textContent = state.username || '-';
+            document.getElementById('displayOpponent').textContent = state.mode === 'ai' ? 'الكمبيوتر' : state.opponent || '-';
+            document.getElementById('roundCount').textContent = game ? game.roundCount : '0';
+            document.getElementById('pileCount').textContent = game ? game.drawPile.length : '0';
+            document.getElementById('betAmount').value = state.bet;
+            document.getElementById('gameMode').value = state.mode;
+            document.getElementById('userStatus').innerHTML = state.username ? `<span style="color:#15803d;">${state.isOwner ? 'مالك' : 'لاعب'} متصل</span>` : 'غير متصل';
+            document.getElementById('ownerMode').checked = state.isOwner;
+            if (state.isOwner) document.getElementById('ownerMode').disabled = false;
+            else document.getElementById('ownerMode').disabled = true;
+
+            const friendList = document.getElementById('friendList');
+            friendList.innerHTML = '';
+            state.friends.forEach((f, idx) => {
+                const div = document.createElement('div'); div.className = 'friend-item';
+                div.innerHTML = `<span>${f}</span><button class="btn-secondary" style="padding:2px 6px;">حذف</button>`;
+                div.querySelector('button').onclick = () => { state.friends.splice(idx,1); updateUIValues(); };
+                friendList.appendChild(div);
+            });
+        }
+
+        function setMessage(message, type='info') {
+            const el = document.getElementById('gameMessage');
+            el.textContent = message; el.className = `message ${type}`;
+            el.style.display = 'block';
+            setTimeout(() => { if (el.textContent === message) el.style.display = 'none'; }, 2800);
+        }
+
+        function setResult(message, type='success') {
+            const el = document.getElementById('resultMessage');
+            el.textContent = message; el.className = `message ${type}`; el.classList.remove('hidden');
+        }
+
+        function loginPlayer() {
+            const username = document.getElementById('userName').value.trim();
+            const ownerCode = document.getElementById('ownerCode').value.trim();
+            if (!username) { setMessage('يرجى إدخال اسم مستخدم قبل الدخول.', 'error'); return; }
+            state.username = username;
+            state.isOwner = ownerCode === 'مالك123';
+            if (state.isOwner) { setMessage('تم تفعيل وضع المالك بنجاح.', 'success'); }
+            else { setMessage('تم تسجيل الدخول كلاعب عادي.', 'success'); }
+            document.getElementById('lobbyMessage').textContent = '';
+            updateUIValues();
+        }
+
+        function addFriend() {
+            const id = document.getElementById('friendId').value.trim();
+            if (!id) { setMessage('أدخل أي دي صديق صحيح.', 'error'); return; }
+            if (!state.friends.includes(id)) { state.friends.push(id); setResult('تم إضافة الصديق بنجاح'); } 
+            else { setMessage('هذا الصديق موجود بالفعل', 'info'); }
+            document.getElementById('friendId').value = '';
+            updateUIValues();
+        }
+
+        function onModeChange() {
+            state.mode = document.getElementById('gameMode').value;
+            updateUIValues();
+        }
+
+        function depositWallet() {
+            const amount = Number(document.getElementById('walletAmount').value);
+            if (amount <= 0) { setMessage('الرجاء إدخال مبلغ إيجابي', 'error'); return; }
+            const fee = amount * feePercent;
+            state.balance += (amount - fee);
+            setResult(`تم الإيداع: ${amount.toFixed(2)} ج.م - رسوم ${fee.toFixed(2)} ج.م = ${ (amount-fee).toFixed(2)} ج.م`);
+            updateUIValues();
+        }
+
+        function withdrawWallet() {
+            const amount = Number(document.getElementById('walletAmount').value);
+            if (amount <= 0) { setMessage('الرجاء إدخال مبلغ إيجابي', 'error'); return; }
+            const fee = amount * feePercent;
+            if (amount + fee > state.balance) { setMessage('الرصيد غير كافٍ بعد الرسوم.', 'error'); return; }
+            state.balance -= (amount + fee);
+            setResult(`تم السحب: ${amount.toFixed(2)} ج.م + رسوم ${fee.toFixed(2)} ج.م`);
+            updateUIValues();
+        }
+
+        function prepareMatch() {
+            if (!state.username) { setMessage('سجّل الدخول أولاً', 'error'); return; }
+            const betVal = Number(document.getElementById('betAmount').value);
+            if (betVal <= 0 || betVal > state.balance) { setMessage('الرهان غير مناسب أو الرصيد قليل.', 'error'); return; }
+            state.bet = betVal;
+            state.opponent = state.mode === 'friend' ? (state.friends[0] || 'صديق مجهول') : 'الكمبيوتر';
+            document.getElementById('gameArea').classList.remove('hidden');
+            game = new DominoGame(state.bet);
+            setResult(`الغرفة جاهزة: ${state.mode==='ai'?'ضد AI':'ضد صديق'}، الرهان ${state.bet.toFixed(2)} ج.م`);
+            updateUIValues();
+        }
+
+        function startNewGame() {
+            if (!game) { setMessage('ابدأ غرفة أولاً'); return; }
+            if (state.balance < state.bet) { setMessage('الرصيد لا يكفي لتشغيل لعبة جديدة'); return; }
+            game.initializeGame();
+            setMessage('جولة جديدة بدأت', 'info');
+            updateUIValues();
+        }
+
+        function setDropSide(side) {
+            currentDropSide = side;
+            document.getElementById('dropLeft').classList.toggle('btn-accent', side==='left');
+            document.getElementById('dropRight').classList.toggle('btn-accent', side==='right');
+        }
+
+        function drawFromPile() {
+            if (!game || game.gameOver) { setMessage('ابدأ لعبة أولاً', 'error'); return; }
+            if (game.currentTurn !== 'player') { setMessage('ليس دورك الآن', 'error'); return; }
+            game.drawFromPile();
+            updateUIValues();
+        }
+
+        function toggleSettings() {
+            document.getElementById('settingsPanel').classList.toggle('hidden');
+        }
+
+        document.getElementById('toggleSettingsBtn').onclick = toggleSettings;
+
+        class DominoGame {
+            constructor(bet = 20) {
+                this.bet = bet;
+                this.ownerPool = 0;
+                this.dominoes = [];
+                this.board = [];
+                this.playerHand = [];
+                this.computerHand = [];
+                this.drawPile = [];
+                this.playerScore = 0;
+                this.computerScore = 0;
+                this.roundCount = 0;
+                this.gameOver = false;
+                this.currentTurn = 'player';
+                this.initializeGame();
+            }
+
+            initializeGame() {
+                this.dominoes = [];
+                for (let i = 0; i <= 6; i++) for (let j = i; j <= 6; j++) this.dominoes.push([i,j]);
+                this.dominoes = this.shuffle(this.dominoes);
+                this.playerHand = this.dominoes.splice(0,7);
+                this.computerHand = this.dominoes.splice(0,7);
+                this.drawPile = [...this.dominoes];
+                this.board = [];
+                this.gameOver = false;
+                this.currentTurn = 'player';
+                this.roundCount += 1;
+                this.renderBoard();
+                this.showMessage('تم توزيع البطاقات، دورك أولاً', 'info');
+                this.update();
+            }
+
+            shuffle(arr) { const array=[...arr]; for (let i=array.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[array[i],array[j]]=[array[j],array[i]];} return array; }
+
+            canPlay(domino) {
+                if (this.board.length===0) return true;
+                const left = this.board[0][0];
+                const right = this.board[this.board.length-1][1];
+                return domino[0]===left || domino[1]===left || domino[0]===right || domino[1]===right;
+            }
+
+            putDomino(domino, side='right') {
+                if (!this.canPlay(domino)) return false;
+                if (this.board.length===0) { this.board.push(domino); return true; }
+                const left = this.board[0][0];
+                const right = this.board[this.board.length-1][1];
+                if (side==='left') {
+                    if (domino[0]===left) this.board.unshift([domino[1],domino[0]]);
+                    else if (domino[1]===left) this.board.unshift([domino[0],domino[1]]);
+                    else return false;
+                } else {
+                    if (domino[0]===right) this.board.push([domino[1],domino[0]]);
+                    else if (domino[1]===right) this.board.push([domino[0],domino[1]]);
+                    else return false;
+                }
+                return true;
+            }
+
+            playerPlay(index) {
+                if (this.gameOver || this.currentTurn !== 'player') return;
+                const domino = this.playerHand[index];
+                if (!domino) return;
+                if (!this.putDomino(domino, currentDropSide)) { setMessage('لا يمكن وضع هذه القطعة على الجانب المحدد', 'error'); return; }
+                this.playerHand.splice(index,1); playSound('place');
+                this.currentTurn = 'computer';
+                this.update();
+                this.checkEnd();
+                if (!this.gameOver) setTimeout(()=>this.computerMove(), 900);
+            }
+
+            computerMove() {
+                if (this.gameOver) return;
+                const valid = this.computerHand.filter(d=>this.canPlay(d));
+                if (valid.length===0) {
+                    if (this.drawPile.length>0) {
+                        const newDomino = this.drawPile.pop();
+                        this.computerHand.push(newDomino); playSound('draw'); setMessage('الكمبيوتر سحب قطعة من المكدس', 'info');
+                    } else {
+                        setMessage('الكمبيوتر لا يستطيع اللعب، دورك', 'info');
+                    }
+                    this.currentTurn = 'player'; this.update(); return;
+                }
+                const best = valid.reduce((acc,d)=>{ const sum=d[0]+d[1]; return sum > acc.sum ? {domino:d,sum} : acc; }, {domino:valid[0],sum:-1});
+                const chosen = best.domino;
+                const index = this.computerHand.findIndex(d=>d[0]===chosen[0]&&d[1]===chosen[1]);
+                const preferSide = (this.board.length===0 ? 'right' : ((chosen[0]===this.board[0][0]||chosen[1]===this.board[0][0]) ? 'left' : 'right'));
+                this.putDomino(chosen, preferSide);
+                this.computerHand.splice(index,1); playSound('place'); setMessage(`الكمبيوتر يلعب [${chosen[0]}-${chosen[1]}]`, 'info');
+                this.currentTurn='player'; this.update(); this.checkEnd();
+            }
+
+            drawFromPile() {
+                if (!this.drawPile.length) { setMessage('مكدس السحب فارغ', 'error'); return; }
+                const piece = this.drawPile.pop();
+                this.playerHand.push(piece); playSound('draw'); setMessage(`تم السحب [${piece[0]}-${piece[1]}]`, 'info');
+                this.currentTurn='computer'; this.update();
+                setTimeout(()=>this.computerMove(), 850);
+            }
+
+            checkEnd() {
+                if (this.playerHand.length===0) { this.finishGame('player'); return; }
+                if (this.computerHand.length===0) { this.finishGame('computer'); return; }
+                if (this.drawPile.length===0 && !this.playerHand.some(d=>this.canPlay(d)) && !this.computerHand.some(d=>this.canPlay(d))) {
+                    this.finishGame('draw');
+                }
+            }
+
+            finishGame(winner) {
+                this.gameOver = true;
+                if (winner==='player') {
+                    let winAmount = state.bet;
+                    let commission = state.isOwner ? 0 : winAmount * ownerCut;
+                    let paid = winAmount - commission;
+                    state.balance += paid;
+                    if (state.isOwner) { state.balance += commission; commission = 0; }
+                    this.ownerPool += commission;
+                    setResult(`فزت! ربح ${paid.toFixed(2)} ج.م + عمولة مالك ${commission.toFixed(2)} ج.م`, 'success');
+                    playSound('win');
+                } else if (winner==='computer') {
+                    let loss = state.bet;
+                    state.balance -= loss;
+                    if (state.balance < 0) state.balance = 0;
+                    setResult(`خسرت ${loss.toFixed(2)} ج.م`, 'error');
+                    playSound('lose');
+                } else {
+                    setResult('تعادل! لا تغيير في الرصيد', 'info');
+                }
+
+                if (state.isOwner) {
+                    setResult(`رصيد المالك من العمولة: ${this.ownerPool.toFixed(2)} ج.م`,'success');
+                }
+                this.update();
+                updateUIValues();
+            }
+
+            renderBoard() {
+                const boardEl = document.getElementById('board'); boardEl.innerHTML='';
+                this.board.forEach(tile => {
+                    const card=document.createElement('div'); card.className='domino'; card.innerHTML=`<span>${tile[0]}</span><span>${tile[1]}</span>`;
+                    boardEl.appendChild(card);
+                });
+
+                const hand = document.getElementById('playerHand'); hand.innerHTML='';
+                this.playerHand.forEach((tile,idx) => {
+                    const card=document.createElement('div'); card.className='hand-domino'; card.draggable='true'; card.innerHTML=`<span>${tile[0]}</span><span>${tile[1]}</span>`;
+                    card.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain', idx); });
+                    card.addEventListener('click',()=>this.playerPlay(idx));
+                    hand.appendChild(card);
+                });
+
+                const dropZone=document.getElementById('dropZone');
+                dropZone.ondragover=e=>{ e.preventDefault(); dropZone.classList.add('drag-over'); };
+                dropZone.ondragleave=()=>dropZone.classList.remove('drag-over');
+                dropZone.ondrop=e=>{ e.preventDefault(); dropZone.classList.remove('drag-over'); const idx=Number(e.dataTransfer.getData('text/plain')); this.playerPlay(idx); };
+
+                document.getElementById('pileCount').textContent=this.drawPile.length;
+                document.getElementById('roundCount').textContent=this.roundCount;
+            }
+
+            update() { this.renderBoard(); updateUIValues(); }
+
+            showMessage(text,type='info'){ setMessage(text,type); }
+        }
+
+        updateUIValues();
+        setDropSide('right');
+    </script>
+</body>
+</html>
