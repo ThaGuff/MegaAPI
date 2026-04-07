@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revenue Intelligence Suite</title>
+  <link rel="stylesheet" href="./assets/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <h1>Revenue Intelligence Suite</h1>
+        <p>Dashboard, client PDF report, and implementation plan in one ready-to-run package.</p>
+      </div>
+      <div class="nav">
+        <a href="#" class="active" data-tab="dashboardTab">Dashboard</a>
+        <a href="#" data-tab="reportTab">Printable Report</a>
+        <a href="#" data-tab="setupTab">Setup / Notes</a>
+      </div>
+    </div>
+
+    <section id="dashboardTab" class="tab">
+      <div class="grid hero">
+        <div class="panel">
+          <h2>SaaS-style Revenue Dashboard</h2>
+          <div class="sub">Use this to upsell monthly intelligence retainers. It is optimized for decisions: where to prospect, what to fix, what to charge, what to create, and what competitors are doing better.</div>
+          <div class="chips">
+            <span class="chip">Lead Gen</span>
+            <span class="chip">Pricing</span>
+            <span class="chip">Reviews</span>
+            <span class="chip">SEO</span>
+            <span class="chip">Ad Monitoring</span>
+            <span class="chip">Competitive Intel</span>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Immediate actions</h3>
+          <div class="sub">Load your own JSON, filter by client/channel, export CSV/JSON, and print a client-ready PDF from the report tab.</div>
+          <div class="chips">
+            <button class="btn primary" id="sampleLoader">Reload sample data</button>
+            <label class="btn">Load custom JSON<input id="fileInput" type="file" accept="application/json" class="hidden" /></label>
+            <button class="btn" id="exportCsv">Export CSV</button>
+            <button class="btn" id="exportJson">Export JSON</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel filters-panel">
+        <div class="filters">
+          <div><label>Client</label><select id="clientFilter" class="filter" data-filter="client"></select></div>
+          <div><label>Industry</label><select id="industryFilter" class="filter" data-filter="industry"></select></div>
+          <div><label>Region</label><select id="regionFilter" class="filter" data-filter="region"></select></div>
+          <div><label>Source</label><select id="sourceFilter" class="filter" data-filter="source"></select></div>
+          <div><label>Revenue Lever</label><select id="leverFilter" class="filter" data-filter="lever"></select></div>
+          <div><label>Priority</label><select id="priorityFilter" class="filter" data-filter="priority"></select></div>
+          <div class="actions"><button class="btn" id="resetFilters">Reset</button><button class="btn primary" id="printDashboard">Print Dashboard</button></div>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="label">Qualified Opportunities</div><div class="value" id="kpiOpps">0</div><div id="kpiScoreHint" class="small muted">—</div></div>
+        <div class="kpi"><div class="label">Estimated Pipeline</div><div class="value" id="kpiPipeline">$0</div><div class="small up">Model-driven estimate</div></div>
+        <div class="kpi"><div class="label">Potential Savings</div><div class="value" id="kpiSavings">$0</div><div class="small up">Ops + pricing actions</div></div>
+        <div class="kpi"><div class="label">Average Opportunity Score</div><div class="value" id="kpiScore">0</div><div class="small muted">0–100 weighted score</div></div>
+        <div class="kpi"><div class="label">Sentiment Gap</div><div class="value" id="kpiSentiment">0</div><div class="small down">Negative vs strongest competitor</div></div>
+        <div class="kpi"><div class="label">Price Position Delta</div><div class="value" id="kpiPrice">0%</div><div id="kpiPriceHint" class="small muted">—</div></div>
+      </div>
+
+      <div class="grid two">
+        <div class="panel">
+          <div class="toolbar"><h3>Opportunity Backlog</h3><span class="muted small">Ranked by score and impact</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Client</th><th>Opportunity</th><th>Source</th><th>Value</th><th>ETA</th><th>Score</th></tr></thead>
+              <tbody id="opportunityRows"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Revenue Lever Mix</h3>
+          <div class="sub">Total economic value by lever under current filters.</div>
+          <div id="leverBars" class="bar-list"></div>
+        </div>
+      </div>
+
+      <div class="grid three">
+        <div class="panel">
+          <h3>Lead & Market Expansion</h3>
+          <div class="table-wrap"><table><thead><tr><th>Market</th><th>Lead Pool</th><th>Valid Contacts</th><th>Gap</th><th>Fit</th></tr></thead><tbody id="leadRows"></tbody></table></div>
+        </div>
+        <div class="panel">
+          <h3>Pricing Signals</h3>
+          <div id="pricingBars" class="bar-list"></div>
+        </div>
+        <div class="panel">
+          <h3>Review Pain Points</h3>
+          <div class="table-wrap"><table><thead><tr><th>Theme</th><th>Mentions</th><th>Severity</th><th>Action</th></tr></thead><tbody id="reviewRows"></tbody></table></div>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <div class="panel">
+          <h3>SEO / Demand Signals</h3>
+          <div class="table-wrap"><table><thead><tr><th>Keyword Cluster</th><th>Intent</th><th>Difficulty</th><th>Priority</th></tr></thead><tbody id="seoRows"></tbody></table></div>
+        </div>
+        <div class="panel">
+          <h3>Creative / Ad Intelligence</h3>
+          <div class="table-wrap"><table><thead><tr><th>Competitor</th><th>Pattern</th><th>Signal</th><th>Recommended Test</th></tr></thead><tbody id="creativeRows"></tbody></table></div>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <div class="panel">
+          <h3>Top Insights</h3>
+          <div id="topInsights" class="list"></div>
+        </div>
+        <div class="panel">
+          <h3>Auto-generated Recommendations</h3>
+          <div id="recommendations" class="list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reportTab" class="tab hidden">
+      <div class="panel hide-print">
+        <div class="grid two">
+          <div>
+            <label>Report title</label>
+            <input id="reportTitleInput" placeholder="Monthly Revenue Intelligence Report" />
+          </div>
+          <div class="actions" style="justify-content:flex-end;align-items:end">
+            <button class="btn primary" id="printReport">Print / Save PDF</button>
+          </div>
+        </div>
+      </div>
+      <div class="report-shell">
+        <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start">
+          <div>
+            <h1 id="reportTitle">Monthly Revenue Intelligence Report</h1>
+            <div class="muted">Prepared: <span id="reportDate"></span></div>
+            <div class="muted">Scope: <span id="reportScope"></span></div>
+          </div>
+          <div style="min-width:220px">
+            <div class="report-card"><strong>Executive Summary</strong><div id="reportSummary" style="margin-top:8px"></div></div>
+          </div>
+        </div>
+
+        <div id="reportKpis" class="report-grid"></div>
+
+        <h2>Top Opportunities</h2>
+        <table class="report-table">
+          <thead><tr><th>Opportunity</th><th>Source</th><th>Value</th><th>Score</th></tr></thead>
+          <tbody id="reportOppRows"></tbody>
+        </table>
+
+        <h2 style="margin-top:28px">Recommendations</h2>
+        <ol id="reportRecommendations"></ol>
+
+        <div class="page-break"></div>
+
+        <h2>Analyst Notes</h2>
+        <div id="reportNotes" class="report-card"></div>
+      </div>
+    </section>
+
+    <section id="setupTab" class="tab hidden">
+      <div class="grid two">
+        <div class="panel">
+          <h3>How to use this package</h3>
+          <div class="sub">
+            1) Open this file in a browser. 2) Load your own JSON using the sample schema. 3) Filter by client, region, or source. 4) Print the report tab to create a PDF deliverable. 5) Export filtered CSV/JSON for downstream workflows.
+          </div>
+          <div class="chips">
+            <span class="chip">No build step</span>
+            <span class="chip">Works as static files</span>
+            <span class="chip">Printable PDF</span>
+            <span class="chip">Custom JSON import</span>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Analyst Notes</h3>
+          <label>Saved locally in your browser</label>
+          <textarea id="notes" placeholder="Add client-specific notes, talking points, risks, or next steps here..."></textarea>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Expected JSON structure</h3>
+        <div class="sub">Use the included sample-data.json as the source of truth. Keys expected: meta, opportunities, leads, pricing, reviews, seo, creative.</div>
+        <pre style="white-space:pre-wrap;background:#0b1430;padding:14px;border-radius:12px;border:1px solid var(--line);overflow:auto">{
+  "meta": {"title":"...","generatedAt":"2026-04-07"},
+  "opportunities": [{"client":"...","industry":"...","region":"...","source":"...","lever":"Revenue Growth","title":"...","impact":10000,"savings":0,"score":86,"priority":"High"}],
+  "leads": [],
+  "pricing": [],
+  "reviews": [],
+  "seo": [],
+  "creative": []
+}</pre>
+      </div>
+    </section>
+
+    <div class="footer">Created for monetizing API intelligence into a recurring client-facing product.</div>
+  </div>
+  <script src="./assets/app.js"></script>
+</body>
+</html>

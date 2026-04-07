@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "title": "Revenue Intelligence Sample Dataset",
+    "generatedAt": "2026-04-07",
+    "currency": "USD"
+  },
+  "opportunities": [
+    {"id":1,"client":"NorthPeak Dental","industry":"Local Services","region":"Phoenix","source":"Google Maps","lever":"Revenue Growth","title":"Prospect low-rated dentists for review-recovery offer","detail":"Target dental practices with sub-4.0 ratings and low review-response rate.","impact":18000,"savings":0,"score":91,"priority":"High","etaDays":3,"owner":"Sales","status":"New","sentimentGap":-0.8,"priceDelta":4,"date":"2026-04-01"},
+    {"id":2,"client":"NorthPeak Dental","industry":"Local Services","region":"Phoenix","source":"Google Reviews AI","lever":"Cost Savings","title":"Fix scheduling complaints causing front-desk leakage","detail":"Review themes show missed callbacks and reschedule friction.","impact":0,"savings":3200,"score":84,"priority":"High","etaDays":14,"owner":"Ops","status":"In Review","sentimentGap":-0.8,"priceDelta":4,"date":"2026-04-02"},
+    {"id":3,"client":"NorthPeak Dental","industry":"Local Services","region":"Phoenix","source":"Google Search","lever":"Revenue Growth","title":"Create emergency dentist landing pages","detail":"High intent search cluster not fully addressed by current site.","impact":9500,"savings":0,"score":79,"priority":"Medium","etaDays":10,"owner":"Marketing","status":"Planned","sentimentGap":-0.8,"priceDelta":4,"date":"2026-04-03"},
+
+    {"id":4,"client":"BrightCart","industry":"Ecommerce","region":"United States","source":"Amazon","lever":"Revenue Protection","title":"Monitor margin-compressing competitor pricing on top SKUs","detail":"Automate daily price-delta alerts on 12 highest-margin products.","impact":7000,"savings":2600,"score":88,"priority":"High","etaDays":1,"owner":"Merchandising","status":"New","sentimentGap":0.2,"priceDelta":-6,"date":"2026-04-01"},
+    {"id":5,"client":"BrightCart","industry":"Ecommerce","region":"United States","source":"Shopify","lever":"Revenue Growth","title":"Launch competitive bundle offer against top store","detail":"Bundle structure outperforms on AOV while protecting unit margin.","impact":14000,"savings":0,"score":82,"priority":"High","etaDays":7,"owner":"Ecommerce","status":"Planned","sentimentGap":0.2,"priceDelta":-6,"date":"2026-04-03"},
+    {"id":6,"client":"BrightCart","industry":"Ecommerce","region":"United States","source":"Facebook Ads","lever":"Revenue Growth","title":"Clone winning UGC ad angle with stronger hook","detail":"Competitors repeating one creative pattern with broad library coverage.","impact":11000,"savings":0,"score":86,"priority":"High","etaDays":4,"owner":"Paid Media","status":"In Progress","sentimentGap":0.2,"priceDelta":-6,"date":"2026-04-04"},
+
+    {"id":7,"client":"CloudForge","industry":"SaaS","region":"North America","source":"SaaS Pricing","lever":"Revenue Growth","title":"Add annual-plan anchor to improve close rates","detail":"Competitor packaging makes annual option appear safer and cheaper.","impact":24000,"savings":0,"score":90,"priority":"High","etaDays":7,"owner":"RevOps","status":"New","sentimentGap":-0.1,"priceDelta":12,"date":"2026-04-01"},
+    {"id":8,"client":"CloudForge","industry":"SaaS","region":"North America","source":"LinkedIn","lever":"Revenue Growth","title":"Target HubSpot + Salesforce accounts with stack-based outbound","detail":"Tech-stack segmentation identifies high-fit accounts with integration urgency.","impact":27000,"savings":0,"score":89,"priority":"High","etaDays":5,"owner":"SDR Team","status":"Planned","sentimentGap":-0.1,"priceDelta":12,"date":"2026-04-05"},
+    {"id":9,"client":"CloudForge","industry":"SaaS","region":"North America","source":"BuiltWith","lever":"Cost Savings","title":"Cut SDR waste by excluding non-ICP domains","detail":"Reduce outreach to poor-fit accounts and recycle hours into named accounts.","impact":0,"savings":5400,"score":85,"priority":"High","etaDays":3,"owner":"RevOps","status":"In Progress","sentimentGap":-0.1,"priceDelta":12,"date":"2026-04-06"},
+    {"id":10,"client":"CloudForge","industry":"SaaS","region":"North America","source":"Google Search","lever":"Revenue Growth","title":"Create BOFU comparison pages around forecasting alternatives","detail":"Competitors capture comparison intent with weak content quality.","impact":13000,"savings":0,"score":80,"priority":"Medium","etaDays":12,"owner":"Content","status":"Planned","sentimentGap":-0.1,"priceDelta":12,"date":"2026-04-06"}
+  ],
+  "leads": [
+    {"client":"NorthPeak Dental","industry":"Local Services","region":"Phoenix","source":"Google Maps","lever":"Revenue Growth","market":"Phoenix West","leadPool":187,"validContactsPct":71,"gap":"High complaint density + weak review response","fitScore":88},
+    {"client":"NorthPeak Dental","industry":"Local Services","region":"Phoenix","source":"Google Maps","lever":"Revenue Growth","market":"Scottsdale","leadPool":95,"validContactsPct":69,"gap":"Premium pricing but mediocre review velocity","fitScore":76},
+    {"client":"CloudForge","industry":"SaaS","region":"North America","source":"BuiltWith","lever":"Revenue Growth","market":"HubSpot + Segment users","leadPool":640,"validContactsPct":68,"gap":"Strong fit with integrations page","fitScore":91},
+    {"client":"CloudForge","industry":"SaaS","region":"North America","source":"LinkedIn","lever":"Revenue Growth","market":"RevOps agencies 50-250 employees","leadPool":210,"validContactsPct":62,"gap":"Active hiring implies tooling spend","fitScore":84},
+    {"client":"BrightCart","industry":"Ecommerce","region":"United States","source":"Shopify","lever":"Revenue Protection","market":"DTC apparel stores","leadPool":320,"validContactsPct":54,"gap":"Price undercutting & catalog overlap","fitScore":73}
+  ],
+  "pricing": [
+    {"client":"BrightCart","industry":"Ecommerce","region":"United States","source":"Amazon","lever":"Revenue Protection","label":"SKU A vs Amazon median","pct":94},
+    {"client":"BrightCart","industry":"Ecommerce","region":"United States","source":"Shopify","lever":"Revenue Growth","label":"Bundle offer competitiveness","pct":81},
+    {"client":"CloudForge","industry":"SaaS","region":"North America","source":"SaaS Pricing","lever":"Revenue Growth","label":"Annual plan attractiveness","pct":72},
+    {"client":"NorthPeak Dental","industry":"Local Services","region":"Phoenix","source":"Google Maps","lever":"Revenue Growth","label":"Price trust vs local peers","pct":66}
+  ],
+  "reviews": [
+    {"client":"NorthPeak Dental","industry":"Local Services","region":"Phoenix","source":"Google Reviews AI","lever":"Cost Savings","theme":"Scheduling delays","mentions":39,"severity":"High","action":"Fix callback SLA + booking reminders"},
+    {"client":"NorthPeak Dental","industry":"Local Services","region":"Phoenix","source":"Google Reviews AI","lever":"Revenue Growth","theme":"Insurance confusion","mentions":26,"severity":"Medium","action":"Add pricing and insurance explainer page"},
+    {"client":"BrightCart","industry":"Ecommerce","region":"United States","source":"Reviews","lever":"Revenue Protection","theme":"Sizing inconsistency","mentions":19,"severity":"High","action":"Improve PDP fit guide and returns copy"},
+    {"client":"CloudForge","industry":"SaaS","region":"North America","source":"Reviews","lever":"Cost Savings","theme":"Onboarding friction","mentions":14,"severity":"Medium","action":"Create guided setup checklist"}
+  ],
+  "seo": [
+    {"client":"NorthPeak Dental","industry":"Local Services","region":"Phoenix","source":"Google Autocomplete","lever":"Revenue Growth","cluster":"emergency dentist open now","intent":"High","difficulty":"Medium","priority":"Create city+service pages"},
+    {"client":"CloudForge","industry":"SaaS","region":"North America","source":"Google Search","lever":"Revenue Growth","cluster":"sales forecasting software for agencies","intent":"High","difficulty":"Medium","priority":"BOFU comparison page"},
+    {"client":"BrightCart","industry":"Ecommerce","region":"United States","source":"Google Search","lever":"Revenue Protection","cluster":"best running shirt for summer","intent":"Medium","difficulty":"High","priority":"Editorial content + retargeting hook"}
+  ],
+  "creative": [
+    {"client":"BrightCart","industry":"Ecommerce","region":"United States","source":"Facebook Ads","lever":"Revenue Growth","competitor":"Competitor A","pattern":"UGC + comparison hook","signal":"Rising ad duplication count","test":"Launch 3 creator-style ads with social proof"},
+    {"client":"BrightCart","industry":"Ecommerce","region":"United States","source":"Instagram Reels","lever":"Revenue Growth","competitor":"Competitor B","pattern":"Short-form benefit demo","signal":"High save/share ratio","test":"15-second feature-first Reels"},
+    {"client":"CloudForge","industry":"SaaS","region":"North America","source":"LinkedIn","lever":"Revenue Growth","competitor":"Competitor C","pattern":"Problem-agitate-solve posts","signal":"Strong executive engagement","test":"Founder POV content series"},
+    {"client":"NorthPeak Dental","industry":"Local Services","region":"Phoenix","source":"YouTube","lever":"Revenue Growth","competitor":"Local Chain","pattern":"Before/after testimonial videos","signal":"High comment positivity","test":"Patient story clips for ads + landing page"}
+  ]
+}
